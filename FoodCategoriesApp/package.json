@@ -1,5 +1,5 @@
 {
-  "name": "guessnrgameapp",
+  "name": "rncourse",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -10,16 +10,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "browserslist": "^4.20.3",
-    "expo": "~45.0.0",
-    "expo-app-loading": "^2.0.0",
-    "expo-font": "^10.1.0",
-    "expo-linear-gradient": "~11.3.0",
-    "expo-status-bar": "~1.3.0",
-    "md5-file": "^5.0.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-native": "0.68.2"
+    "expo": "~44.0.0",
+    "expo-status-bar": "~1.2.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
