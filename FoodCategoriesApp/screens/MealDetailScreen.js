@@ -6,7 +6,7 @@ import {
   Image,
   Button,
 } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useContext } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MEALS } from '../data/dummy-data';
@@ -14,15 +14,24 @@ import MealDetails from '../components/MealDetails';
 import Subtitle from '../components/MealDetail/Subtitle';
 import IconButton from '../components/IconButton';
 import List from '../components/MealDetail/List';
+import { FavoritesContext } from '../store/FavoritesContext';
 
 const MealDetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const favoritesCtx = useContext(FavoritesContext);
+
   const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+  const isFavorite = favoritesCtx.ids.includes(mealId);
+
   const handleHeaderBtnPress = () => {
-    console.log('pressed');
+    if (isFavorite) {
+      favoritesCtx.removeFavorite(mealId);
+    } else {
+      favoritesCtx.addFavorite(mealId);
+    }
   };
 
   useLayoutEffect(() => {
@@ -30,7 +39,7 @@ const MealDetailScreen = () => {
       headerRight: () => {
         return (
           <IconButton
-            iconName="star"
+            iconName={isFavorite ? 'star' : 'star-outline'}
             color="white"
             onPress={handleHeaderBtnPress}
           />

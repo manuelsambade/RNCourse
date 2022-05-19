@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
+import { FavoritesContextProvider } from './store/FavoritesContext';
 import CategoriesScreen from './screens/CategoriesScreen';
 import MealsOverviewScreen from './screens/MealsOverviewScreen';
 import MealDetailScreen from './screens/MealDetailScreen';
@@ -56,7 +57,7 @@ const DrawerNavigator = () => {
 
 export default function App() {
   return (
-    <>
+    <FavoritesContextProvider>
       <StatusBar style="light" />
       <NavigationContainer>
         <Stack.Navigator
@@ -85,7 +86,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </FavoritesContextProvider>
   );
 }
 
