@@ -3,9 +3,9 @@ import React, { useLayoutEffect, useContext } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
-import Button from '../components/UI/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
+import ExpenseClient from '../api-client/ExpenseClient';
 
 const ManageExpenseScreen = () => {
   const route = useRoute();
@@ -38,6 +38,7 @@ const ManageExpenseScreen = () => {
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
     } else {
+      ExpenseClient.createExpense(expenseData);
       expensesCtx.addExpense(expenseData);
     }
     navigation.goBack();
