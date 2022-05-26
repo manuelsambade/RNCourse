@@ -38,8 +38,9 @@ const ManageExpenseScreen = () => {
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
     } else {
-      ExpenseClient.createExpense(expenseData);
-      expensesCtx.addExpense(expenseData);
+      ExpenseClient.createExpense(expenseData).then((id) => {
+        expensesCtx.addExpense({ ...expenseData, id: id });
+      });
     }
     navigation.goBack();
   }

@@ -26,8 +26,10 @@ async function getExpenses() {
 
 function getExpense(id) {}
 
-function createExpense(expenseData) {
-  axios.post(FIREBASE_BASE_URL, expenseData);
+async function createExpense(expenseData) {
+  const response = await axios.post(FIREBASE_BASE_URL, expenseData);
+  const id = response.data.name;
+  return id;
 }
 
 function updateExpense(expenseData, id) {}
