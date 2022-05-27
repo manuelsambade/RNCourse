@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const FIREBASE_BASE_URL =
-  'https://reactnativecourse-4e85e-default-rtdb.europe-west1.firebasedatabase.app/expenses.json';
+  'https://reactnativecourse-4e85e-default-rtdb.europe-west1.firebasedatabase.app';
 
 async function getExpenses() {
-  const response = await axios.get(FIREBASE_BASE_URL);
+  const response = await axios.get(`${FIREBASE_BASE_URL}/expenses.json`);
 
   const expenses = [];
 
@@ -19,28 +19,33 @@ async function getExpenses() {
     expenses.push(expenseObj);
   }
 
-  console.log(expenses);
-
   return expenses;
 }
 
 function getExpense(id) {}
 
-async function createExpense(expenseData) {
-  const response = await axios.post(FIREBASE_BASE_URL, expenseData);
+async function postExpense(expenseData) {
+  const response = await axios.post(
+    `${FIREBASE_BASE_URL}/expenses.json`,
+    expenseData
+  );
   const id = response.data.name;
   return id;
 }
 
-function updateExpense(expenseData, id) {}
+function putExpense(id, expenseData) {
+  return axios.put(`${FIREBASE_BASE_URL}/expenses/${id}.json`, expenseData);
+}
 
-function deleteExpense(id) {}
+function deleteExpense(id) {
+  return axios.delete(`${FIREBASE_BASE_URL}/expenses/${id}.json`);
+}
 
 const ExpenseClient = {
   getAllExpenses: getExpenses,
   getExpense: getExpense,
-  createExpense: createExpense,
-  updateExpense: updateExpense,
+  postExpense: postExpense,
+  putExpense: putExpense,
   deleteExpense: deleteExpense,
 };
 

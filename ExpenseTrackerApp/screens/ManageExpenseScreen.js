@@ -1,16 +1,19 @@
 import { StyleSheet, View } from 'react-native';
-import React, { useLayoutEffect, useContext } from 'react';
+import React, { useLayoutEffect, useContext, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 import ExpenseClient from '../api-client/ExpenseClient';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 const ManageExpenseScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const expensesCtx = useContext(ExpensesContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
@@ -25,8 +28,10 @@ const ManageExpenseScreen = () => {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
-    if (editedExpenseId) expensesCtx.deleteExpense(editedExpenseId);
+  async function deleteExpenseHandler() {
+    setIsLoading(true);
+    expensesCtx.deleteExpense(editedExpenseId);
+    await ExpenseClient.deleteExpense(editedExpenseId);
     navigation.goBack();
   }
 
@@ -34,15 +39,20 @@ const ManageExpenseScreen = () => {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
+    setIsLoading(true);
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
+      await ExpenseClient.putExpense(editedExpenseId, expenseData);
     } else {
-      ExpenseClient.createExpense(expenseData).then((id) => {
-        expensesCtx.addExpense({ ...expenseData, id: id });
-      });
+      const id = await ExpenseClient.postExpense(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay />;
   }
 
   return (
